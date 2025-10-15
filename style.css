@@ -1,0 +1,437 @@
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: black;
+  color: #fff;
+  text-align: center;
+  overflow-x: hidden;
+}
+
+/* Esconde as barras mas mantém o scroll funcionando */
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;       /* previne barra horizontal */
+  -ms-overflow-style: none; /* IE/Edge legado */
+  scrollbar-width: none;    /* Firefox */
+}
+
+/* Chrome / Safari / Edge (Blink/WebKit) */
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;
+}
+
+
+
+/*efeito de esconder conteudo antes do clique do botão*/
+.gallery,
+.timeline,
+.surprise {
+  display: none;      /* escondidas inicialmente */
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+
+.visible {
+  display: block;     /* mostra quando tiver essa classe */
+  opacity: 1;
+}
+
+
+/* Fundo estrelado */
+#stars {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -2;
+}
+
+
+/*texto efeito escrita*/
+
+/* Container da Lua */
+.moon-container {
+  position: relative;
+  width: 320px;
+  height: 320px;
+  margin: 48px auto 24px;
+  cursor: grab;              /* indica que dá pra arrastar */
+  touch-action: none;        /* evita scroll em mobile durante o drag */
+  z-index: 10;
+}
+
+.moon-container::after{
+  content:""; position:absolute; inset:-12%; border-radius:50%;
+  background: radial-gradient(circle at 50% 50%, rgba(255,255,255,.22), rgba(255,255,255,0) 60%);
+  filter: blur(16px);
+  pointer-events:none;
+}
+
+
+
+.moon-container.dragging {
+  cursor: grabbing;
+}
+
+#moonCanvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Hero */
+.hero {
+  height: 120vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+
+.hero button {
+  margin-top: 20px;
+  padding: 12px 24px;
+  border: none;
+  background: #ffff65;
+  color: #000000;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: transform 0.3s ease, letter-spacing 0.3s ease;
+  
+}
+
+/* ::before e ::after começam invisíveis */
+.hero button::before,
+.hero button::after {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* Conteúdo que aparece no hover */
+.hero button::before {
+  content: "😈";   /* caractere no começo */
+  margin-right: 8px;
+}
+
+.hero button::after {
+  content: "😈";   /* caractere no final */
+  margin-left: 8px;
+}
+
+/* Ao passar o mouse */
+.hero button:hover {
+  transform: scale(1.3);
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+.hero button:hover::before,
+.hero button:hover::after {
+  opacity: 1;
+}
+
+
+
+/* Gallery */
+.gallery {
+  padding: 60px 20px;
+  background: rgba(255, 255, 255, 0.05);
+}
+.gallery .grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 15px;   /* diminua aqui se quiser menos espaçamento */
+}
+.gallery img {
+  width: 100%;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.6);
+  transition: 0.3s;
+}
+.gallery img:hover {
+  transform: scale(1.05);
+}
+
+/* Novo estilo para figcaption abaixo da imagem */
+.photo-card {
+  margin: 0;              /* remove margens do <figure> */
+  padding: 0;
+  border-radius: 15px;
+  overflow: hidden;
+  background: rgba(255,255,255,0.02);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+  display: flex;
+  flex-direction: column;
+}
+
+.photo-card img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 0; /* já controlamos no figure */
+}
+
+.photo-card figcaption {
+  margin: 0;
+  padding: 10px;
+  font-size: 0.9rem;
+  line-height: 1.3;
+  color: #eaeaea;
+  background: rgba(0,0,0,0.3);
+}
+
+/* Galeria em tela cheia, centralizada */
+.gallery.fullscreen {
+  position: relative;
+  min-height: 100vh;
+  height: 100vh;              /* força ocupar a tela toda */
+  display: grid;
+  place-items: center;        /* centraliza o conteúdo na viewport */
+  overflow: hidden;           /* impede ver o que está abaixo */
+  padding: 24px 20px;         /* respiro nas bordas */
+}
+
+/* Conteúdo da grid dimensionado e sem “sobrar” pra baixo */
+.gallery.fullscreen .grid {
+  width: min(1100px, 92vw);
+  max-height: calc(100vh - 96px); /* 96px de folga pro título/respiração */
+  overflow: auto;                 /* rola apenas dentro da grid se precisar */
+  padding-right: 4px;             /* evita “pulo” do scroll interno */
+}
+
+/* Colunas maiores (fotos maiores) em fullscreen */
+.gallery.fullscreen .grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 12px;                      /* menos espaço entre cartões */
+}
+
+/* Ajustes dos cards (garantir que ocupem toda a largura da célula) */
+.photo-card { margin: 0; padding: 0; border-radius: 16px; overflow: hidden; }
+.photo-card img { width: 100%; height: auto; display: block; }
+.photo-card figcaption { margin: 0; padding: 10px 12px; font-size: .95rem; }
+
+
+/* Surpresa final */
+.surprise {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: black;
+  color: white;
+}
+#fireworks {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.photo-card{
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.08);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 10px 30px rgba(0,0,0,.45);
+}
+.photo-card img{ transition: transform .45s ease; }
+.photo-card:hover img{ transform: scale(1.04); }
+.photo-card figcaption{
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+
+.surprise {
+  position: relative; /* importante p/ posicionar filhos absolutos */
+  overflow: hidden;
+}
+.fireworks-message {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  z-index: 2;  /* fica acima do canvas */
+  max-width: 90%;
+}
+.fireworks-message p {
+  font-size: clamp(1.4rem, 3vw, 2.2rem);
+  font-weight: 600;
+  color: #fff;
+  text-shadow: 0 0 10px rgba(255,255,255,0.5),
+               0 0 25px rgba(255,255,100,0.4);
+  animation: fadeInUp 2s ease forwards;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translate(-50%, -40%); }
+  to   { opacity: 1; transform: translate(-50%, -50%); }
+}
+
+
+.surprise{
+  position: relative;
+}
+.surprise::after{
+  content:"";
+  position:absolute; inset:0; pointer-events:none;
+  background: radial-gradient(120% 120% at 50% 50%, rgba(255,255,255,0.06) 0%, rgba(0,0,0,0.6) 70%, rgba(0,0,0,0.85) 100%);
+  mix-blend-mode: screen;
+}
+
+/* ---- Telas até 768px (tablets/phones na vertical) ---- */
+@media (max-width: 768px) {
+  /* Tipografia e espaçamentos mais contidos */
+  h1 {
+    font-size: 1.35rem;
+    margin: 16px;
+    line-height: 1.4;
+    word-break: break-word;
+  }
+
+  /* Lua menor e com gestos que não travam o scroll vertical */
+  .moon-container {
+    width: 220px;
+    height: 220px;
+    margin: 32px auto 16px;
+    touch-action: pan-y;        /* permite deslizar a página enquanto arrasta levemente */
+    will-change: transform;     /* sugere aceleração em mobile */
+  }
+
+  /* Hero ocupa a tela e mantém respiro lateral */
+  .hero {
+    height: 100dvh;    /* melhor que 100vh em mobile */
+    padding: 0 16px;
+  }
+
+  /* Botão mais “tocável” e sem efeitos exagerados no mobile */
+  .hero button {
+    font-size: 1rem;
+    padding: 10px 20px;
+    border-radius: 22px;
+    transition: transform 0.2s ease, letter-spacing 0.2s ease;
+  }
+
+  /* Galeria mais compacta, sem overflow lateral */
+  .gallery {
+    padding: 40px 10px;
+  }
+  .gallery .grid {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px;
+  }
+
+  .photo-card {
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.4);     /* sombras mais leves no mobile */
+    backdrop-filter: blur(4px);                 /* blur reduzido */
+  }
+  .photo-card img {
+    will-change: transform; /* rolagem mais suave */
+  }
+  .photo-card figcaption {
+    font-size: 0.85rem;
+    padding: 8px;
+  }
+
+  /* Galeria em modo “fullscreen” com ajustes móveis */
+  .gallery.fullscreen {
+    padding: 20px 12px;
+  }
+  .gallery.fullscreen .grid {
+    width: min(1000px, 94vw);
+    max-height: calc(100dvh - 84px);
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 10px;
+  }
+
+  /* Mensagem dos fogos menor para caber sem quebrar demais */
+  .fireworks-message h2 { font-size: 1.5rem; }
+  .fireworks-message h3 { font-size: 1rem; }
+
+  /* Vinheta mais discreta sobre a surpresa para não escurecer demais */
+  .surprise::after {
+    background: radial-gradient(120% 120% at 50% 50%,
+                rgba(255,255,255,0.04) 0%,
+                rgba(0,0,0,0.55) 70%,
+                rgba(0,0,0,0.8) 100%);
+  }
+}
+
+/* ---- Telas bem pequenas (até ~480px) ---- */
+@media (max-width: 480px) {
+  h1 {
+    font-size: 1.15rem;
+    margin: 14px 12px;
+  }
+
+  .moon-container {
+    width: 180px;
+    height: 180px;
+    margin: 24px auto 12px;
+  }
+
+  .hero button {
+    font-size: 0.95rem;
+    padding: 10px 18px;
+    border-radius: 20px;
+  }
+
+  .gallery .grid {
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 8px;
+  }
+
+  .photo-card figcaption {
+    font-size: 0.8rem;
+    padding: 7px;
+  }
+
+  .fireworks-message h2 { font-size: 1.25rem; }
+  .fireworks-message h3 { font-size: 0.95rem; }
+}
+
+/* ---- Dispositivos touch: neutraliza “hover” pesado e evita jank ---- */
+@media (hover: none) and (pointer: coarse) {
+  .hero button:hover {
+    transform: none;
+    letter-spacing: normal;
+    font-weight: 600; /* mantém feedback sem animação grande */
+  }
+
+  .gallery img:hover {
+    transform: none; /* sem “zoom” ao tocar */
+  }
+}
+
+/* ---- Reduz animações para quem preferir menos movimento ---- */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ---- Modo paisagem com pouca altura (ex.: celulares deitados) ---- */
+@media (max-height: 520px) and (orientation: landscape) {
+  .hero {
+    height: auto;
+    min-height: 100dvh;  /* ocupa a tela sem cortar conteúdo */
+    padding: 16px;
+  }
+  .moon-container {
+    width: 200px;
+    height: 200px;
+  }
+  .gallery {
+    padding-top: 24px;
+  }
+}
