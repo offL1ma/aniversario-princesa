@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>A Lua</title>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/space.css">
+  <link rel="icon" href="/assets/favico.png" type="image/x-icon">
+</head>
+<body>
+  <!-- topo com “voltar” -->
+  <header class="topbar">
+    <a class="back" href="index.html">← Voltar</a>
+    <nav class="shortcuts">
+      <a href="memorias.html">Memórias</a>
+      <a href="fogos.html">Fogos</a>
+    </nav>
+  </header>
+
+  <canvas id="stars" aria-hidden="true"></canvas>
+
+  <div class="moon-container">
+    <canvas id="moonCanvas"></canvas>
+  </div>
+  <h1 id="typed-text"></h1>
+
+  <script src="https://cdn.jsdelivr.net/npm/three@0.156.1/build/three.min.js"></script>
+  <script src="js/typewriter.js"></script>
+  <script src="js/stars.js"></script>
+  <script src="js/moon.js"></script>
+</body>
+</html>

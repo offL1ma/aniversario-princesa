@@ -1,0 +1,24 @@
+* { box-sizing: border-box; }
+html, body { margin:0; padding:0; overflow-x:hidden; }
+body {
+  font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+  background:#000; color:#fff; text-align:center;
+}
+
+/* esconder scrollbars, mantendo o scroll */
+html::-webkit-scrollbar, body::-webkit-scrollbar { display:none; }
+:root { --pad: 16px; }
+
+.topbar {
+  position: sticky; top:0; z-index: 50;
+  display:flex; align-items:center; justify-content:space-between;
+  padding: 10px var(--pad);
+  background: rgba(0,0,0,.55); backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+.topbar .back, .topbar a { color:#fff; text-decoration:none; }
+.topbar .back { font-weight:600; }
+.topbar .shortcuts a { margin-left:14px; opacity:.9; }
+.topbar .shortcuts a:hover { opacity:1; text-decoration:underline; }
+
+

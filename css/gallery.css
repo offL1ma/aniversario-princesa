@@ -1,0 +1,91 @@
+/* opcional: fundo de estrelas junto */
+#stars { position: fixed; inset:0; z-index:-2; }
+
+.gallery { padding: 60px 20px; }
+.gallery.fullscreen { min-height:100vh; height:100vh; display:grid; place-items:center; overflow:hidden; }
+.gallery h2 { margin-top: 8px; }
+.gallery .grid {
+  width: min(1100px, 92vw);
+  max-height: calc(100vh - 96px);
+  overflow: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px,1fr));
+  gap: 12px;
+  padding-right: 4px;
+}
+.photo-card {
+  background: rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:16px; overflow:hidden;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 10px 30px rgba(0,0,0,.45);
+  display:flex; flex-direction:column;
+}
+.photo-card img { width:100%; height:auto; display:block; transition: transform .45s ease; }
+.photo-card:hover img{ transform: scale(1.04); }
+.photo-card figcaption{
+  margin:0; padding:10px 12px; font-size:.95rem; line-height:1.35;
+  color:#eaeaea; background: rgba(0,0,0,.3);
+  border-top:1px solid rgba(255,255,255,0.08);
+}
+
+/* === Overrides para fullscreen sem scroll === */
+
+/* dá uma altura fixa para a topbar para podermos calcular o restante */
+.topbar { --h: 56px; height: var(--h); }
+
+/* a seção ocupa a tela toda (descontando o header), sem overflow */
+.gallery.fullscreen {
+  /* duas linhas: título + grid */
+  display: grid;
+  grid-template-rows: auto 1fr;
+  height: calc(100dvh - var(--h));
+  min-height: calc(100dvh - var(--h));
+  padding: 12px 20px;      /* menos padding pra caber melhor */
+  overflow: hidden;        /* sem rolagem */
+  scale: 0.8;                /* 0.9 = 90% do tamanho original */
+  transform-origin: center;
+}
+
+/* título compacto */
+.gallery.fullscreen h2 { margin: 0 0 10px; }
+
+/* o grid ocupa TUDO e não rola; 3 colunas × 2 linhas */
+.gallery.fullscreen .grid {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;        /* override do overflow:auto */
+  max-height: none;        /* remove a limitação anterior */
+  padding-right: 0;        /* não precisamos do “respiro do scroll” */
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);  /* 3 colunas fixas */
+  grid-template-rows: repeat(2, 1fr);     /* 2 linhas fixas */
+  gap: 14px;                              
+}
+
+/* cada card ocupa integralmente sua célula */
+.photo-card {
+  position: relative;
+  display: block;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+/* imagem sempre preenchendo a célula, recortando se necessário */
+.photo-card img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;   /* garante mosaico sem distorcer */
+  transform: none;     /* evita “zoom” no hover se quiser */
+}
+
+/* legenda sobreposta no rodapé do card (não ocupa layout) */
+.photo-card figcaption{
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  margin: 0; padding: 10px 12px;
+  background: linear-gradient(to top, rgba(0,0,0,.55), rgba(0,0,0,0));
+  border-top: none;
+  font-size: .95rem;
+}

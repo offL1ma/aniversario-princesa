@@ -1,79 +1,46 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Feliz aniversário meu amor</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="icon" href="/assets/favico.png" type="image/x-icon">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Krona+One&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./css/style.css">
+  <link rel="icon" href="/assets/favico.png" type="img/png">
+  <title>Feliz aniversário meu amor!</title>
 </head>
 <body>
+  <header>
+    <!-- <nav>
+      <h1>Hello gayzona bem vinda ao site do teu presente de aniversário🤓</h1>
+      <span class="line"></span>
+      <ul style="padding-top: 10vh;">
+        <li><a href="lua.html" class="link">A Lua</a></li>
+        <li><a href="memorias.html" class="link">Galeria de Memórias</a></li>
+        <li><a href="fogos.html" class="link">Xpetáculo</a></li>
+      </ul>
+    </nav> -->
 
-<!-- Fundo estrelado -->
-<canvas id="stars"></canvas>
-<!-- Camadas visuais do efeito portal -->
-<div id="warpVignette" aria-hidden="true"></div>
-<!-- Gradiente de céu (noite→amanhecer) -->
-<div id="skyGradient" aria-hidden="true"></div>
+    <section id="home">
+      <div class="text-inner">
+        <h1>Hello mor, preparei uma apresentação bem gay p te mostrar, espero que tu goste</h1>
+        <button class="btn-main" onclick="window.location.href='lua.html'">Iniciar apresentação (gayzice)</button>
+      </div>
+      <img class="img-home" src="./assets/home-image.png" alt="">
+    </section>
+  </header>
 
+  <footer>
+    <small>Eu te amo, isso é pouquinha coisa perto de tudo que eu faria pra te mostrar o meu amor.</small>
+  </footer>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.156.1/build/three.min.js"></script>
 
-  <!-- Container da Lua -->
-  <div class="moon-container">
-    <canvas id="moonCanvas"></canvas>
-  </div>
-  <h1 id="typed-text"></h1>
-
-  <!-- Tela inicial -->
-  <section class="hero">
-    <button onclick="scrollToContent()">Ver Surpresa</button>
-  </section>
-
-  <section class="gallery">
-  <h2>Nossas Memórias 📸</h2>
-  <div class="grid">
-    <figure class="photo-card">
-      <img src="assets/img5.jpg" alt="Foto 5">
-      <figcaption>12/06/2024 — Nossa primeira peça de teatro</figcaption>
-    </figure>
-    <figure class="photo-card">
-      <img src="assets/img6.jpg" alt="Foto 6">
-      <figcaption>01/11/2024 — Primeira comemoração de namoro</figcaption>
-    </figure>
-    <figure class="photo-card">
-      <img src="assets/img1.jpg" alt="Foto 1">
-      <figcaption>2025 — O inicio do meu setup GAYmer</figcaption>
-    </figure>
-    <figure class="photo-card">
-      <img src="assets/img4.jpg" alt="Foto 4">
-      <figcaption>31/05/2025 — Nosso primeiro conclave</figcaption>
-    </figure>
-    <figure class="photo-card">
-      <img src="assets/img3.jpg" alt="Foto 3">
-      <figcaption>27/07/2025 — A nossa primeira viagem juntas</figcaption>
-    </figure>
-    <figure class="photo-card">
-      <img src="assets/img2.jpg" alt="Foto 2">
-      <figcaption>09/09/2025 — Sleepover depois de muito tempo separadas</figcaption>
-    </figure>
-  </div>
-</section>
+<script src="typewriter.js"></script>
+<script src="stars.js"></script>
+<script src="moon.js"></script>
+<script src="fireworks.js"></script>
+<script src="script.js"></script> <!-- este contém scrollToContent -->
 
 
-  <!-- Surpresa final -->
-  <section class="surprise">
-    
-    <!-- frase central -->
-    <div class="fireworks-message">
-    <h2>Parabéns minha princesa!!!🎉🎉🎉🎉</h2>
-    <h3>Sua idosa🫵🫵🫵🫵🫵</h3>
-  </div>
-
-  <canvas id="fireworks"></canvas>
-</section>
-
-
-  <!-- Three.js -->
- <script src="https://cdn.jsdelivr.net/npm/three@0.156.1/build/three.min.js"></script>
-<script src="script.js"></script>
 </body>
 </html>
