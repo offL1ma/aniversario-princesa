@@ -129,3 +129,52 @@ footer small{ font-size:.95rem; opacity:.9; }
   #home .text-inner h1{ font-size:clamp(26px,6vw,38px); }
   #home .img-home{ width:80%; }
 }
+
+/* ===== MOBILE FIRST (Base) ===== */
+/* Mantenha todo o estilo atual como base para mobile */
+
+/* ===== TABLET (768px+) ===== */
+@media (min-width: 768px) {
+  #home {
+    margin-top: 80px;
+    gap: 32px;
+    padding-bottom: 80px;
+  }
+  
+  #home .text-inner h1 {
+    font-size: clamp(28px, 4vw, 48px);
+  }
+  
+  #home .img-home {
+    width: clamp(300px, 45vw, 520px);
+  }
+}
+
+/* ===== DESKTOP (1024px+) ===== */
+@media (min-width: 1024px) {
+  header nav {
+    grid-template-columns: auto 1fr auto;
+    justify-items: start;
+    padding: 20px 0;
+  }
+
+  header nav .line {
+    grid-column: 1 / -1;
+  }
+
+  #home {
+    flex-direction: row;
+    text-align: left;
+    justify-content: space-between;
+  }
+
+  #home .text-inner {
+    margin: 0;
+    flex: 1;
+  }
+
+  #home .img-home {
+    margin-top: 0;
+    flex-shrink: 0;
+  }
+}

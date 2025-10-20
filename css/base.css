@@ -21,4 +21,20 @@ html::-webkit-scrollbar, body::-webkit-scrollbar { display:none; }
 .topbar .shortcuts a { margin-left:14px; opacity:.9; }
 .topbar .shortcuts a:hover { opacity:1; text-decoration:underline; }
 
+/* ===== MOBILE FIRST ===== */
+.topbar {
+  padding: 8px 12px;
+}
+
+/* ===== TABLET (768px+) ===== */
+@media (min-width: 768px) {
+  .topbar {
+    padding: 10px var(--pad);
+  }
+  
+  .topbar .shortcuts a {
+    margin-left: 20px;
+  }
+}
+
 

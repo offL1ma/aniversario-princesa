@@ -5,13 +5,11 @@
 .gallery.fullscreen { min-height:100vh; height:100vh; display:grid; place-items:center; overflow:hidden; }
 .gallery h2 { margin-top: 8px; }
 .gallery .grid {
-  width: min(1100px, 92vw);
-  max-height: calc(100vh - 96px);
-  overflow: auto;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px,1fr));
-  gap: 12px;
-  padding-right: 4px;
+  max-height: none !important;   /* solta a altura */
+  height: auto !important;
+  overflow: visible !important;  /* nada de rolagem aqui */
+  padding-right: 0 !important;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); /* responsivo */
 }
 .photo-card {
   background: rgba(255,255,255,0.06);
@@ -36,15 +34,12 @@
 
 /* a seção ocupa a tela toda (descontando o header), sem overflow */
 .gallery.fullscreen {
-  /* duas linhas: título + grid */
-  display: grid;
-  grid-template-rows: auto 1fr;
-  height: calc(100dvh - var(--h));
-  min-height: calc(100dvh - var(--h));
-  padding: 12px 20px;      /* menos padding pra caber melhor */
-  overflow: hidden;        /* sem rolagem */
-  scale: 0.8;                /* 0.9 = 90% do tamanho original */
-  transform-origin: center;
+  height: auto !important;
+  min-height: auto !important;
+  overflow: visible !important;
+  scale: 1 !important;           /* tira o encolhimento */
+  grid-template-rows: auto auto; /* título + conteúdo */
+  padding: 24px 20px;
 }
 
 /* título compacto */
@@ -64,20 +59,12 @@
 }
 
 /* cada card ocupa integralmente sua célula */
-.photo-card {
-  position: relative;
-  display: block;
-  border-radius: 16px;
-  overflow: hidden;
-}
-
-/* imagem sempre preenchendo a célula, recortando se necessário */
+.photo-card { height: auto; }
 .photo-card img {
   width: 100%;
-  height: 100%;
-  display: block;
-  object-fit: cover;   /* garante mosaico sem distorcer */
-  transform: none;     /* evita “zoom” no hover se quiser */
+  height: auto;                  /* deixa crescer naturalmente */
+  object-fit: cover;             /* pode manter cover se tiver altura definida */
+  transform: none;
 }
 
 /* legenda sobreposta no rodapé do card (não ocupa layout) */
@@ -88,4 +75,67 @@
   background: linear-gradient(to top, rgba(0,0,0,.55), rgba(0,0,0,0));
   border-top: none;
   font-size: .95rem;
+}
+
+/* tablet e abaixo: tira o scale e muda para 2x3 */
+@media (max-width: 900px) {
+  .gallery.fullscreen{
+    scale: 1;                       /* não encolhe no mobile */
+    height: calc(100svh - var(--h));
+    min-height: calc(100svh - var(--h));
+    padding: 16px 16px;
+  }
+  .gallery.fullscreen .grid{
+    grid-template-columns: repeat(2, 1fr); /* 2 colunas */
+    grid-template-rows: repeat(3, 1fr);    /* 3 linhas */
+    gap: 14px;
+    overflow: hidden;
+    max-height: none;
+    padding-right: 0;
+  }
+  .photo-card figcaption{ font-size: 1rem; }
+}
+
+/* telefones pequenos: aumenta um pouco os cards (reduz gap) */
+@media (max-width: 520px) {
+  .gallery.fullscreen .grid{ gap: 10px; }
+}
+
+@media (max-width: 560px) {
+  .gallery.fullscreen{
+    scale: 1;
+    height: auto;                /* libera a altura */
+    min-height: auto;
+    padding: 16px 12px 24px;
+  }
+  .gallery.fullscreen .grid{
+    grid-template-columns: 1fr;  /* 1 por linha */
+    grid-auto-rows: min(54vh, 380px); /* altura alta para cada card */
+    gap: 14px;
+    overflow: auto;              /* rolagem só da galeria */
+    max-height: none;
+  }
+  .photo-card{ height: 100%; }
+  .photo-card img{ height: 100%; object-fit: cover; }
+  .photo-card figcaption{ font-size: 1.05rem; }
+}
+
+/* ===== MOBILE FIRST (Base) ===== */
+/* Mantenha as regras atuais de mobile (max-width: 560px) como padrão */
+
+/* ===== TABLET (561px+) ===== */
+@media (min-width: 561px) {
+  .gallery.fullscreen .grid {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    overflow: hidden;
+  }
+}
+
+/* ===== DESKTOP (901px+) ===== */
+@media (min-width: 901px) {
+  .gallery.fullscreen .grid {
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+  }
 }
