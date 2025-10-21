@@ -11,6 +11,22 @@ window.addEventListener("resize", resizeFireworks);
 
 function random(min, max){ return Math.random() * (max - min) + min; }
 
+function clamp(v,min,max){ return v<min?min:v>max?max:v; }
+
+// Paletas baseadas na matiz principal
+function makeAnalogous(h){
+  const offs = [-30, -15, 0, 15, 30];
+  return offs.map(o => (h + o + 360) % 360);
+}
+function makeComplementary(h){
+  // triádica/levente split para variar bem sem “gritar”
+  const offs = [0, 160, 200];
+  return offs.map(o => (h + o + 360) % 360);
+}
+function pickPalette(h){
+  return (Math.random() < 0.6) ? makeAnalogous(h) : makeComplementary(h);
+}
+
 class Particle {
   constructor(x, y, color, speed, angle){
     this.x=x; this.y=y; this.color=color;
@@ -77,7 +93,7 @@ function animateFireworks(){
   fctx.globalCompositeOperation="source-over";
   fctx.fillStyle="rgba(0,0,0,0.2)"; fctx.fillRect(0,0,fireworksCanvas.width,fireworksCanvas.height);
   fctx.globalCompositeOperation="lighter";
-  if (Math.random() < 0.04) fireworks.push(new Firework());
+  if (Math.random() < 0.07) fireworks.push(new Firework());
   fireworks.forEach(f=>{ f.update(); f.draw(); });
   fireworks=fireworks.filter(f=>!f.exploded || f.particles.length>0);
   requestAnimationFrame(animateFireworks);

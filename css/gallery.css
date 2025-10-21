@@ -19,7 +19,7 @@
   box-shadow: 0 10px 30px rgba(0,0,0,.45);
   display:flex; flex-direction:column;
 }
-.photo-card img { width:100%; height:auto; display:block; transition: transform .45s ease; }
+.photo-card img { width:100%; height:auto; display:block; transition: transform .2s ease; }
 .photo-card:hover img{ transform: scale(1.04); }
 .photo-card figcaption{
   margin:0; padding:10px 12px; font-size:.95rem; line-height:1.35;

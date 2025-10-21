@@ -1,5 +1,15 @@
+// ========== stars.js (atualizado) ==========
 const starsCanvas = document.getElementById("stars");
 const starsCtx = starsCanvas?.getContext("2d");
+
+// raf-debounce para resize “macio”
+function rafDebounce(fn){
+  let af = null;
+  return (...args) => {
+    if (af) cancelAnimationFrame(af);
+    af = requestAnimationFrame(() => fn(...args));
+  };
+}
 
 function resizeStars() {
   if (!starsCanvas) return;
@@ -7,13 +17,18 @@ function resizeStars() {
   starsCanvas.height = window.innerHeight;
 }
 resizeStars();
-window.addEventListener("resize", resizeStars);
+window.addEventListener("resize", rafDebounce(resizeStars));
 
 const LAYER_MULT_BASE = { 1: 0.75, 2: 0.36, 3: 0.14 };
 const ANGLE_TO_PX_X = () => starsCanvas.width  * 0.025;
 const ANGLE_TO_PX_Y = () => starsCanvas.height * 0.020;
 let starAngVelX = 0, starAngVelY = 0;
 const INPUT_GAIN = 0.42, DAMP = 0.90, MAX_VEL = 0.05;
+
+// reduz intensidade se usuário prefere menos movimento
+const prefersReduce = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches ?? false;
+const TWINKLE_MULT = prefersReduce ? 0.4 : 1;
+const SHOOTING_PROB = prefersReduce ? 0.002 : 0.005;
 
 function rand(min, max) { return Math.random() * (max - min) + min; }
 
@@ -32,7 +47,7 @@ class Star {
     this.freqX = rand(0.2, 0.6); this.freqY = rand(0.2, 0.6);
     this.phaseX = Math.random() * Math.PI * 2; this.phaseY = Math.random() * Math.PI * 2;
     this.vx = 0; this.vy = 0;
-    this.twinklePhase = Math.random() * Math.PI * 2; this.twinkleSpeed = Math.random() * 0.02 + 0.005;
+    this.twinklePhase = Math.random() * Math.PI * 2; this.twinkleSpeed = (Math.random() * 0.02 + 0.005) * TWINKLE_MULT;
     this.blinkTimer = 0; this.blinkCooldown = Math.random() * 30 + 20;
   }
   step(gx, gy, t) {
@@ -100,10 +115,10 @@ class ShootingStar {
     const a = (this.life > this.fadeStart) ? 1 : Math.max(0, (this.life / this.fadeStart));
     const dx = Math.cos(this.angle) * this.len, dy = Math.sin(this.angle) * this.len;
     const g = starsCtx.createLinearGradient(this.x, this.y, this.x - dx, this.y - dy);
-    g.addColorStop(0.0, `rgba(255,255,255,${0.95 * a})`);   // cabeça bem branca
-    g.addColorStop(0.2, `rgba(255,230,150,${0.75 * a})`);   // amarelo claro
-    g.addColorStop(0.5, `rgba(255,180,80,${0.45 * a})`);    // laranja-ouro
-    g.addColorStop(1.0, `rgba(255,80,0,0)`);                // termina avermelhado/transparente
+    g.addColorStop(0.0, `rgba(255,255,255,${0.95 * a})`);
+    g.addColorStop(0.2, `rgba(255,230,150,${0.75 * a})`);
+    g.addColorStop(0.5, `rgba(255,180,80,${0.45 * a})`);
+    g.addColorStop(1.0, `rgba(255,80,0,0)`);
     starsCtx.save();
     starsCtx.lineWidth = 2; starsCtx.lineCap = "round"; starsCtx.strokeStyle = g;
     starsCtx.beginPath(); starsCtx.moveTo(this.x, this.y); starsCtx.lineTo(this.x - dx, this.y - dy); starsCtx.stroke();
@@ -130,17 +145,13 @@ function animateStars(){
   if (Math.abs(starAngVelY) < 0.0002) starAngVelY = 0;
   shootingStars.forEach(s => { s.update(); s.draw(); });
   shootingStars = shootingStars.filter(s => s.active);
-  if (Math.random() < 0.005) shootingStars.push(new ShootingStar());
+  if (Math.random() < SHOOTING_PROB) shootingStars.push(new ShootingStar());
   t2d += 1/60; requestAnimationFrame(animateStars);
 }
 requestAnimationFrame(animateStars);
 
-window.starAngVelX = starAngVelX;
-window.starAngVelY = starAngVelY;
 window.setStarVelocity = function(vx, vy) {
-  starAngVelX = vx;
-  starAngVelY = vy;
+  starAngVelX = Math.max(-MAX_VEL, Math.min(MAX_VEL, vx));
+  starAngVelY = Math.max(-MAX_VEL, Math.min(MAX_VEL, vy));
 };
-window.getStarVelocity = function() {
-  return { x: starAngVelX, y: starAngVelY };
-};
+window.getStarVelocity = function() { return { x: starAngVelX, y: starAngVelY }; };

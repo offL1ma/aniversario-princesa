@@ -1,13 +1,35 @@
+/* ========== base.css (atualizado) ========== */
 * { box-sizing: border-box; }
 html, body { margin:0; padding:0; overflow-x:hidden; }
+
+/* tokens mínimos compartilhados (mantém compat) */
+:root { --pad: 16px; }
+
+/* Fade-in global suave + opção de reduzir motion */
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: none; }
+}
 body {
   font-family: 'Poppins', system-ui, -apple-system, sans-serif;
   background:#000; color:#fff; text-align:center;
+  animation: fade-in .45s ease both; /* entrada suave */
+}
+
+/* Fade-out na navegação (ativado via JS adicionando .is-exiting no body) */
+body.is-exiting {
+  transition: opacity .25s ease;
+  opacity: 0;
+}
+
+/* Respeita usuários com “reduzir movimentos” */
+@media (prefers-reduced-motion: reduce) {
+  body { animation: none; }
+  * { scroll-behavior: auto !important; transition: none !important; }
 }
 
 /* esconder scrollbars, mantendo o scroll */
 html::-webkit-scrollbar, body::-webkit-scrollbar { display:none; }
-:root { --pad: 16px; }
 
 .topbar {
   position: sticky; top:0; z-index: 50;
@@ -15,26 +37,27 @@ html::-webkit-scrollbar, body::-webkit-scrollbar { display:none; }
   padding: 10px var(--pad);
   background: rgba(0,0,0,.55); backdrop-filter: blur(8px);
   border-bottom: 1px solid rgba(255,255,255,.08);
+  transition: background .2s ease, border-color .2s ease;
 }
 .topbar .back, .topbar a { color:#fff; text-decoration:none; }
 .topbar .back { font-weight:600; }
-.topbar .shortcuts a { margin-left:14px; opacity:.9; }
+.topbar .shortcuts a { margin-left:14px; opacity:.9; transition: opacity .2s ease; }
 .topbar .shortcuts a:hover { opacity:1; text-decoration:underline; }
 
-/* ===== MOBILE FIRST ===== */
-.topbar {
-  padding: 8px 12px;
+/* Acessibilidade: foco visível consistente */
+.topbar a:focus-visible,
+a:focus-visible,
+button:focus-visible {
+  outline: 3px solid rgba(255,255,255,.65);
+  outline-offset: 3px;
+  border-radius: 8px;
 }
+
+/* ===== MOBILE FIRST ===== */
+.topbar { padding: 8px 12px; }
 
 /* ===== TABLET (768px+) ===== */
 @media (min-width: 768px) {
-  .topbar {
-    padding: 10px var(--pad);
-  }
-  
-  .topbar .shortcuts a {
-    margin-left: 20px;
-  }
+  .topbar { padding: 10px var(--pad); }
+  .topbar .shortcuts a { margin-left: 20px; }
 }
-
-
