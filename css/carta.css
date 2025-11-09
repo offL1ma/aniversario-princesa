@@ -1,0 +1,143 @@
+/* modo "carta" – sobrescreve o fundo escuro do base.css */
+body.letter-mode {
+  /* fundo escuro, combinando com lua/memórias/fogos */
+  background:
+    radial-gradient(circle at top, #20263a 0, #060813 45%, #000 80%);
+  color: #3f1802;
+  text-align: center;          /* alinha com as outras páginas */
+}
+
+
+/* ajusta o topo para combinar com a carta */
+body.letter-mode .topbar {
+  background: linear-gradient(to bottom, rgba(0,0,0,0.45), rgba(0,0,0,0.02));
+  border-bottom-color: rgba(255,255,255,0.18);
+}
+
+/* container geral da carta (já descontando a altura aproximada do header) */
+.letter-wrapper {
+  min-height: calc(100vh - 56px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px 32px;
+}
+
+/* “papel antigo” da carta */
+.letter {
+  position: relative;
+  max-width: 720px;
+  width: 100%;
+  padding: 28px 20px 32px;
+  border-radius: 18px;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.96)),
+    repeating-linear-gradient(
+      to bottom,
+      rgba(120, 90, 50, 0.08) 0,
+      rgba(120, 90, 50, 0.08) 1px,
+      transparent 26px,
+      transparent 28px
+    );
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(120, 84, 46, 0.5);
+  overflow: hidden;
+}
+
+/* texto manuscrito */
+#letter-text {
+  font-family: "Reenie Beanie", system-ui, -apple-system, sans-serif;
+  font-size: clamp(24px, 4.3vw, 34px);
+  line-height: 1.45;
+  white-space: pre-wrap; /* mantém quebras de linha que você colocar */
+  margin: 0;
+}
+
+/* estrelas "desenhadas" */
+.letter-stars {
+  position: absolute;
+  display: flex;
+  gap: 10px;
+  color: rgba(90, 60, 35, 0.85);
+  pointer-events: none;
+}
+
+.letter-stars--top {
+  top: 10px;
+  right: 18px;
+}
+
+.letter-stars--bottom {
+  bottom: 12px;
+  left: 16px;
+}
+
+.hand-star {
+  width: 44px;
+  height: 44px;
+  stroke-dasharray: 420;
+  stroke-dashoffset: 420;
+  animation: draw-star 1.1s ease forwards;
+  opacity: 0;
+}
+
+.hand-star.small {
+  width: 30px;
+  height: 30px;
+}
+
+/* animação de desenho da estrela */
+@keyframes draw-star {
+  from {
+    stroke-dashoffset: 420;
+    opacity: 0;
+    transform: scale(0.9) rotate(-8deg);
+  }
+  to {
+    stroke-dashoffset: 0;
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+/* ===== MOBILE FIRST ===== */
+@media (max-width: 600px) {
+  .letter {
+    padding: 22px 16px 26px;
+    border-radius: 14px;
+  }
+
+  .letter-stars--top {
+    top: 6px;
+    right: 10px;
+  }
+
+  .letter-stars--bottom {
+    bottom: 8px;
+    left: 10px;
+  }
+
+  #letter-text {
+    font-size: clamp(22px, 5vw, 30px);
+  }
+}
+
+/* tablet / desktop */
+@media (min-width: 900px) {
+  .letter-wrapper {
+    padding: 32px 24px 40px;
+  }
+
+  .letter {
+    padding: 32px 32px 38px;
+  }
+}
+
+/* respeita quem prefere menos movimento */
+@media (prefers-reduced-motion: reduce) {
+  .hand-star {
+    animation: none;
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+}
